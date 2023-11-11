@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, SkeletonText, useColorModeValue, Text, Heading } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 import VideoUpload from "@/components/VideoUpload";
+import ThreeScene from '@/components/ThreeScene'; // Adjust the path as necessary
 
 import axios from 'axios';
 
@@ -73,7 +74,10 @@ const Page = () => {
                   <Text>{labProtocol}</Text>
                 </SkeletonText>
               </Box>
-            )}
+              <Box bg={bg} shadow="md" p={4} borderRadius="md">
+                <Heading size="md">Simulator</Heading>
+                <ThreeScene />
+              </Box>
           </Flex>
         </Box>
       </Flex>
