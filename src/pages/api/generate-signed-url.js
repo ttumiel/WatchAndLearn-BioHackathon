@@ -1,14 +1,24 @@
 import { Storage } from "@google-cloud/storage";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const storage = new Storage();
+    const storageOptions = process.env.GOOGLE_APPLICATION_CREDENTIALS
+      ? {}
+      : {
+          credentials: JSON.parse(
+            Buffer.from(
+              process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
+              "base64"
+            ).toString("utf-8")
+          ),
+        };
+    const storage = new Storage(storageOptions);
     const bucketName = "biohack-demonstration-videos";
 
     // Generate a random file name
     const originalFilename = req.body.filename;
-    const fileExtension = originalFilename.split('.').pop();
+    const fileExtension = originalFilename.split(".").pop();
     const randomFilename = `${uuidv4()}.${fileExtension}`;
 
     const options = {
@@ -27,7 +37,9 @@ export default async function handler(req, res) {
       res.status(200).json({ url });
     } catch (error) {
       console.error("Error details:", error.message, error.stack);
-      res.status(500).json({ error: "Error creating signed URL", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Error creating signed URL", details: error.message });
     }
   } else {
     res.status(405).send("Method Not Allowed");

@@ -137,7 +137,7 @@ def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
                     *map(make_image_message, frames),
                     {
                         "type": "text",
-                        "text": "Turn this demonstration into a full laboratory protocol. Format it properly, but be concise.",
+                        "text": "Turn this demonstration into a full laboratory protocol, including title, materials, notes, setup and procedure. Format it properly. Where available, define plate type including number of wells, shape, color, manufacturer and catalog number, name the range of volumes to be pipetted, and specify which type of machine is used.",
                     },
                 ],
             },
