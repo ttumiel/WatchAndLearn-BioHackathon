@@ -1,0 +1,5 @@
+functions-framework==3.*
+openai
+Pillow
+moviepy
+google-cloud-storage
