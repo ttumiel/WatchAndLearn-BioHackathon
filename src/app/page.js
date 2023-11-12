@@ -92,27 +92,27 @@ const Page = () => {
               </Box>
             )}
             {videoUrl && (
-              <Box bg={bg} shadow="md" p={4} borderRadius="md">
-                <Heading size="md">OpenTrons Code</Heading>
-                <SkeletonText
-                  mt="4"
-                  noOfLines={6}
-                  spacing="4"
-                  isLoaded={openTrons != ""}
-                >
-                  <Box px={4}>
-                  <ReactMarkdown children={openTrons} />
-                  </Box>
-                </SkeletonText>
-              </Box>
-              <Box bg={bg} shadow="md" p={4} borderRadius="md">
-                <Heading size="md">Simulator</Heading>
-                <ThreeScene />
-              </Box>
-              <Box bg={bg} shadow="md" p={4} borderRadius="md">
-                <Heading size="md">Workflow</Heading>
-                <MermaidChart />
-              </Box>
+              <><Box bg={bg} shadow="md" p={4} borderRadius="md">
+                            <Heading size="md">OpenTrons Code</Heading>
+                            <SkeletonText
+                                mt="4"
+                                noOfLines={6}
+                                spacing="4"
+                                isLoaded={openTrons != ""}
+                            >
+                                <Box px={4}>
+                                    <ReactMarkdown children={openTrons} />
+                                </Box>
+                            </SkeletonText>
+                        </Box><Box bg={bg} shadow="md" p={4} borderRadius="md">
+                                <Heading size="md">Simulator</Heading>
+                                <ThreeScene />
+                            </Box><Box bg={bg} shadow="md" p={4} borderRadius="md">
+                                <Heading size="md">Workflow</Heading>
+                                <MermaidChart />
+                            </Box></>
+
+            )}
           </Flex>
         </Box>
       </Flex>
