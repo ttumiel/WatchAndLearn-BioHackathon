@@ -39,9 +39,10 @@ def request_wrapper(fn):
         headers = {"Access-Control-Allow-Origin": "*"}
 
         try:
-            args = request.args
+            # args = request.args
+            args = {}
             if request.is_json:
-                args = {**args, **request.get_json()}
+                args = {**request.get_json()}
 
             out = fn(**args)
         except Exception as e:

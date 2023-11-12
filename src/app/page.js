@@ -65,7 +65,8 @@ const Page = () => {
       try {
         const transcriptionResponse = await axios.post(
           "https://us-west1-biohack-404817.cloudfunctions.net/biohack-transcription",
-          { path: videoUrl }
+          { path: videoUrl },
+          { headers: { 'Content-Type': 'application/json' } }
         );
         setTranscription(transcriptionResponse.data);
         return transcriptionResponse.data;
@@ -78,7 +79,8 @@ const Page = () => {
       try {
         const labProtocolResponse = await axios.post(
           "https://us-west1-biohack-404817.cloudfunctions.net/biohack-protocol",
-          { path: videoUrl, transcription: tx }
+          { path: videoUrl, transcription: tx },
+          { headers: { 'Content-Type': 'application/json' } }
         );
         setLabProtocol(labProtocolResponse.data);
         return labProtocolResponse.data;
@@ -91,7 +93,8 @@ const Page = () => {
       try {
         const opentronResp = await axios.post(
           "https://us-west1-biohack-404817.cloudfunctions.net/biohack-conversion",
-          { protocol: protocol }
+          { protocol: protocol },
+          { headers: { 'Content-Type': 'application/json' } }
         );
         console.log(opentronResp.data);
         setOpenTrons(opentronResp.data);
