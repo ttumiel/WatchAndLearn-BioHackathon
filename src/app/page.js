@@ -5,6 +5,7 @@ import { Box, Flex, SkeletonText, useColorModeValue, Text, Heading } from "@chak
 import Layout from "../components/Layout";
 import VideoUpload from "@/components/VideoUpload";
 import ThreeScene from '@/components/ThreeScene'; // Adjust the path as necessary
+import MermaidChart from '@/components/MermaidChart'; // Adjust the path as necessary
 
 import axios from 'axios';
 
@@ -77,6 +78,10 @@ const Page = () => {
               <Box bg={bg} shadow="md" p={4} borderRadius="md">
                 <Heading size="md">Simulator</Heading>
                 <ThreeScene />
+              </Box>
+              <Box bg={bg} shadow="md" p={4} borderRadius="md">
+                <Heading size="md">Workflow</Heading>
+                <MermaidChart />
               </Box>
           </Flex>
         </Box>
