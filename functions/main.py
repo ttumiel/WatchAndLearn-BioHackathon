@@ -113,7 +113,7 @@ def transcript_extraction(path: str):
 
 
 @request_wrapper
-def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
+def protocol_extraction(path: str, transcription: str, frameskip: int = 100):
     with tempfile.NamedTemporaryFile(suffix=".mp4") as temp_video:
         download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
         ## Extract data is slow af
