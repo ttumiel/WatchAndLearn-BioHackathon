@@ -164,14 +164,6 @@ const Page = () => {
                 </Box>
 
                 <Box bg={bg} shadow="md" p={4} borderRadius="md">
-                  <Heading size="md">Simulator</Heading>
-                  {openTrons == "" ? (
-                    <Skeleton height="500px" />
-                  ) : (
-                    <ThreeScene />
-                  )}
-                </Box>
-                <Box bg={bg} shadow="md" p={4} borderRadius="md">
                   <Heading size="md">Well Simulator</Heading>
                   {openTrons == "" ? (
                     <Skeleton height="500px" />
@@ -179,6 +171,16 @@ const Page = () => {
                     <Sim2D />
                   )}
                 </Box>
+
+                <Box bg={bg} shadow="md" p={4} borderRadius="md">
+                  <Heading size="md">3D Simulator</Heading>
+                  {openTrons == "" ? (
+                    <Skeleton height="500px" />
+                  ) : (
+                    <ThreeScene />
+                  )}
+                </Box>
+
                 <Box bg={bg} shadow="md" p={4} borderRadius="md">
                   <Heading size="md">Workflow</Heading>
                   {openTrons == "" ? (
