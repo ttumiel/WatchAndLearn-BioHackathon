@@ -14,6 +14,7 @@ import Layout from "../components/Layout";
 import VideoUpload from "@/components/VideoUpload";
 import ThreeScene from "@/components/ThreeScene"; // Adjust the path as necessary
 import MermaidChart from "@/components/MermaidChart"; // Adjust the path as necessary
+import Sim2D from "@/components/Sim2d";
 import Markdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
@@ -108,6 +109,7 @@ const Page = () => {
     }
   }, [videoUrl]);
 
+
   return (
     <Layout>
       <Flex justifyContent="center" mt={16}>
@@ -164,6 +166,14 @@ const Page = () => {
                     <Skeleton height="500px" />
                   ) : (
                     <ThreeScene />
+                  )}
+                </Box>
+                <Box bg={bg} shadow="md" p={4} borderRadius="md">
+                  <Heading size="md">Well Simulator</Heading>
+                  {openTrons == "" ? (
+                    <Skeleton height="500px" />
+                  ) : (
+                    <Sim2D />
                   )}
                 </Box>
                 <Box bg={bg} shadow="md" p={4} borderRadius="md">
