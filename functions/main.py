@@ -10,6 +10,7 @@ from google.cloud import storage
 from moviepy.editor import VideoFileClip
 from openai import OpenAI
 from PIL import Image
+import time
 
 from cache import CACHED_RESPONSE
 
@@ -69,22 +70,17 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
 
 
 def extract_data(filename, frameskip=10):
-    video = VideoFileClip(filename)
+    video = VideoFileClip(filename, target_resolution=(512, 512), audio=False)
+    total_frames = int(video.fps * video.duration)
 
-    # Extract frames
     frames = []
-    for i, frame in enumerate(video.iter_frames()):
-        if i % frameskip == 0:
-            frame_image = Image.fromarray(frame).resize((512, 512), Image.BICUBIC)
-            im_file = BytesIO()
-            frame_image.save(im_file, format="JPEG")
-            im_bytes = im_file.getvalue()
-            frames.append(base64.b64encode(im_bytes).decode("utf-8"))
-
-    # Extract audio
-    # audio = video.audio
-    # audio_file = "extracted_audio.mp3"
-    # audio.write_audiofile(audio_file)
+    for i in range(0, total_frames, frameskip):
+        frame = video.get_frame(i / video.fps)
+        frame_image = Image.fromarray(frame)
+        im_file = BytesIO()
+        frame_image.save(im_file, format="JPEG")
+        im_bytes = im_file.getvalue()
+        frames.append(base64.b64encode(im_bytes).decode('utf-8'))
 
     return frames
 
@@ -120,7 +116,9 @@ def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
     with tempfile.NamedTemporaryFile(suffix=".mp4") as temp_video:
         download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
         ## Extract data is slow af
+        s = time.time()
         frames = extract_data(temp_video.name, frameskip=int(frameskip))
+        print("FRAME EXTRACTION TOOK", time.time() - s)
         # audio_transcription = transcribe(audiofile)
 
         messages = [
@@ -154,7 +152,9 @@ def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
             "max_tokens": 1000,
         }
 
+        s = time.time()
         result = client.chat.completions.create(**params)
+        print("GPT TOOK", time.time() - s)
         return result.choices[0].message.content
         # return CACHED_RESPONSE
 
