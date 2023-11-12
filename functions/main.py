@@ -118,45 +118,45 @@ def transcript_extraction(path: str):
 @request_wrapper
 def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
     with tempfile.NamedTemporaryFile(suffix=".mp4") as temp_video:
-        # download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
-        ### Extract data is slow af
-        # frames = extract_data(temp_video.name, frameskip=int(frameskip))
-        # # audio_transcription = transcribe(audiofile)
+        download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
+        ## Extract data is slow af
+        frames = extract_data(temp_video.name, frameskip=int(frameskip))
+        # audio_transcription = transcribe(audiofile)
 
-        # messages = [
-        #     {
-        #         "role": "user",
-        #         "content": [
-        #             {
-        #                 "type": "text",
-        #                 "text": "The following is the transcribed audio and video frames from a simple lab demonstration.",
-        #             },
-        #             {
-        #                 "type": "text",
-        #                 "text": f"Transcribed audio: {transcription}",
-        #             },
-        #             {
-        #                 "type": "text",
-        #                 "text": "These are frames from a simple demonstration.",
-        #             },
-        #             *map(make_image_message, frames),
-        #             {
-        #                 "type": "text",
-        #                 "text": "Turn this demonstration into a full laboratory protocol, including title, materials, notes, setup and procedure. Format it properly. Where available, define plate type including number of wells, shape, color, manufacturer and catalog number, name the range of volumes to be pipetted, and specify which type of machine is used.",
-        #             },
-        #         ],
-        #     },
-        # ]
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "The following is the transcribed audio and video frames from a simple lab demonstration.",
+                    },
+                    {
+                        "type": "text",
+                        "text": f"Transcribed audio: {transcription}",
+                    },
+                    {
+                        "type": "text",
+                        "text": "These are frames from a simple demonstration.",
+                    },
+                    *map(make_image_message, frames),
+                    {
+                        "type": "text",
+                        "text": "Turn this demonstration into a full laboratory protocol, including materials, notes, setup and procedure. Format it properly. Where available, define plate type including number of wells, shape, color, manufacturer and catalog number, name the range of volumes to be pipetted, and specify which type of machine is used.",
+                    },
+                ],
+            },
+        ]
 
-        # params = {
-        #     "model": "gpt-4-vision-preview",
-        #     "messages": messages,
-        #     "max_tokens": 1000,
-        # }
+        params = {
+            "model": "gpt-4-vision-preview",
+            "messages": messages,
+            "max_tokens": 1000,
+        }
 
-        # result = client.chat.completions.create(**params)
-        # return result.choices[0].message.content
-        return CACHED_RESPONSE
+        result = client.chat.completions.create(**params)
+        return result.choices[0].message.content
+        # return CACHED_RESPONSE
 
 
 @request_wrapper
