@@ -71,7 +71,7 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
 
 
 def extract_data(filename, frameskip=10):
-    video = VideoFileClip(filename, target_resolution=(512, 512), audio=False)
+    video = VideoFileClip(filename, target_resolution=(384, 384), audio=False)
     total_frames = int(video.fps * video.duration)
 
     frames = []
