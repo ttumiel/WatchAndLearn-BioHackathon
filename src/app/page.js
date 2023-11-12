@@ -6,12 +6,14 @@ import Layout from "../components/Layout";
 import VideoUpload from "@/components/VideoUpload";
 import ThreeScene from '@/components/ThreeScene'; // Adjust the path as necessary
 import MermaidChart from '@/components/MermaidChart'; // Adjust the path as necessary
+import ReactMarkdown from 'react-markdown';
 
 import axios from 'axios';
 
 const Page = () => {
   const [transcription, setTranscription] = useState("");
   const [labProtocol, setLabProtocol] = useState("");
+  const [openTrons, setOpenTrons] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [videoUrl, setVideoUrl] = useState(null);
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -29,10 +31,20 @@ const Page = () => {
 
     const fetchLabProtocol = async (tx) => {
       try {
-        const labProtocolResponse = await axios.post('https://us-west1-biohack-404817.cloudfunctions.net/biohack-protocol?', {path: videoUrl, transcription: tx });
+        const labProtocolResponse = await axios.post('https://us-west1-biohack-404817.cloudfunctions.net/biohack-protocol', {path: videoUrl, transcription: tx });
         setLabProtocol(labProtocolResponse.data);
+        return labProtocolResponse.data;
       } catch (error) {
         console.error('Error fetching lab protocol:', error);
+      }
+    };
+
+    const fetchOpenTrons = async (protocol) => {
+      try {
+        const opentronResp = await axios.post('https://us-west1-biohack-404817.cloudfunctions.net/biohack-conversion', { protocol: protocol });
+        setOpenTrons(opentronResp.data);
+      } catch (error) {
+        console.error('Error fetching opentrons:', error);
       }
     };
 
@@ -40,6 +52,7 @@ const Page = () => {
       setIsLoading(true);
       fetchTranscription()
         .then(tx => fetchLabProtocol(tx))
+        .then(tx => fetchOpenTrons(tx))
         .finally(() => setIsLoading(false));
     }
   }, [videoUrl]);
@@ -70,9 +83,26 @@ const Page = () => {
                   mt="4"
                   noOfLines={6}
                   spacing="4"
-                  isLoaded={!isLoading}
+                  isLoaded={labProtocol != ""}
                 >
-                  <Text>{labProtocol}</Text>
+                  <Box px={4}>
+                  <ReactMarkdown children={labProtocol} />
+                  </Box>
+                </SkeletonText>
+              </Box>
+            )}
+            {videoUrl && (
+              <Box bg={bg} shadow="md" p={4} borderRadius="md">
+                <Heading size="md">OpenTrons Code</Heading>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={6}
+                  spacing="4"
+                  isLoaded={openTrons != ""}
+                >
+                  <Box px={4}>
+                  <ReactMarkdown children={openTrons} />
+                  </Box>
                 </SkeletonText>
               </Box>
               <Box bg={bg} shadow="md" p={4} borderRadius="md">

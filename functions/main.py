@@ -11,6 +11,8 @@ from moviepy.editor import VideoFileClip
 from openai import OpenAI
 from PIL import Image
 
+from cache import CACHED_RESPONSE
+
 BUCKET_NAME = "biohack-demonstration-videos"
 
 client = OpenAI()
@@ -42,6 +44,8 @@ def request_wrapper(fn):
 
             out = fn(**args)
         except Exception as e:
+            import traceback
+            print(traceback.format_exc())
             print(f"ERROR :: Function {fn.__name__} failed with", e)
             return (f"Error: {e}", 400, headers)
 
@@ -114,40 +118,66 @@ def transcript_extraction(path: str):
 @request_wrapper
 def protocol_extraction(path: str, transcription: str, frameskip: int = 60):
     with tempfile.NamedTemporaryFile(suffix=".mp4") as temp_video:
-        download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
-        frames = extract_data(temp_video.name, frameskip=int(frameskip))
-        # audio_transcription = transcribe(audiofile)
+        # download_blob(BUCKET_NAME, get_filename_from_url(path), temp_video.name)
+        ### Extract data is slow af
+        # frames = extract_data(temp_video.name, frameskip=int(frameskip))
+        # # audio_transcription = transcribe(audiofile)
 
-        messages = [
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "The following is the transcribed audio and video frames from a simple lab demonstration.",
-                    },
-                    {
-                        "type": "text",
-                        "text": f"Transcribed audio: {transcription}",
-                    },
-                    {
-                        "type": "text",
-                        "text": "These are frames from a simple demonstration.",
-                    },
-                    *map(make_image_message, frames),
-                    {
-                        "type": "text",
-                        "text": "Turn this demonstration into a full laboratory protocol. Format it properly, but be concise.",
-                    },
-                ],
-            },
-        ]
+        # messages = [
+        #     {
+        #         "role": "user",
+        #         "content": [
+        #             {
+        #                 "type": "text",
+        #                 "text": "The following is the transcribed audio and video frames from a simple lab demonstration.",
+        #             },
+        #             {
+        #                 "type": "text",
+        #                 "text": f"Transcribed audio: {transcription}",
+        #             },
+        #             {
+        #                 "type": "text",
+        #                 "text": "These are frames from a simple demonstration.",
+        #             },
+        #             *map(make_image_message, frames),
+        #             {
+        #                 "type": "text",
+        #                 "text": "Turn this demonstration into a full laboratory protocol, including title, materials, notes, setup and procedure. Format it properly. Where available, define plate type including number of wells, shape, color, manufacturer and catalog number, name the range of volumes to be pipetted, and specify which type of machine is used.",
+        #             },
+        #         ],
+        #     },
+        # ]
 
-        params = {
-            "model": "gpt-4-vision-preview",
-            "messages": messages,
-            "max_tokens": 1000,
-        }
+        # params = {
+        #     "model": "gpt-4-vision-preview",
+        #     "messages": messages,
+        #     "max_tokens": 1000,
+        # }
 
-        result = client.chat.completions.create(**params)
-        return result.choices[0].message.content
+        # result = client.chat.completions.create(**params)
+        # return result.choices[0].message.content
+        return CACHED_RESPONSE
+
+
+@request_wrapper
+def opentrons_conversion(protocol: str):
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Take the following experimental protocol and turn it into opentrons code, wrapped in a code block:\n\n{protocol}",
+                }
+            ],
+        },
+    ]
+
+    params = {
+        "model": "gpt-4-vision-preview",
+        "messages": messages,
+        "max_tokens": 1000,
+    }
+
+    result = client.chat.completions.create(**params)
+    return result.choices[0].message.content

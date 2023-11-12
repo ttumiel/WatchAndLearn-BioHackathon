@@ -21,6 +21,8 @@
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.11.0",
+    "react-markdown": "^9.0.0",
+    "remark-gfm": "^4.0.0",
     "uuid": "^9.0.1"
   }
 }
