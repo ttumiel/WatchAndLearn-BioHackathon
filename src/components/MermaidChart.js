@@ -5,7 +5,8 @@ const MermaidIframe = () => {
         <iframe
             src="https://watch-and-learn-sim3-d.vercel.app/mermaid.html"
             width="100%"
-            height="500px" // Adjust the size as needed
+            style={{ backgroundColor: 'inherit' }}
+            height="300px" // Adjust the size as needed
             frameBorder="2"
             allowFullScreen
         ></iframe>
