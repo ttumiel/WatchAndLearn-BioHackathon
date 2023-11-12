@@ -6,7 +6,7 @@ const Sim2D = () => {
             src="https://watch-and-learn-sim3-d.vercel.app/2dsim.html"
             width="100%"
             style={{ backgroundColor: 'inherit' }}
-            height="300px" // Adjust the size as needed
+            height="570px" // Adjust the size as needed
             frameBorder="2"
             allowFullScreen
         ></iframe>
