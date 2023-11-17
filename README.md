@@ -8,10 +8,6 @@ Multimodal AI for lab protocols and automation.
 
 We built a web app that allows users to upload a video of a lab protocol and get back a detailed lab protocol using GPT-4V for video processing and whisper for transcription. By sharing reproducible protocols, and automatically generating robotic replication code, we can greatly improve reproducibility, accessibility and scalability of lab demos.
 
-For a short demo on the video processing, see `demo.ipynb`
-
-![Demo](images/demo.png)
-
 ## Tech Stack
 
 - GPT-4V: video understanding and protocol generation
@@ -29,3 +25,10 @@ For a short demo on the video processing, see `demo.ipynb`
 - [Jacopo Gabrielli](https://www.linkedin.com/in/jacopo-gabrielli-453b58139/)
 - [Daniele Simoneschi](www.linkedin.com/in/danielesimoneschi)
 - [Lisa Neidhardt](https://www.linkedin.com/in/lisa-neidhardt)
+- [Tom Tumiel](https://twitter.com/tomtumiel)
+
+## Demo
+
+For a short demo on the video processing, see `demo.ipynb`
+
+![Demo](images/demo.png)
