@@ -23,7 +23,7 @@ We built a web app that allows users to upload a video of a lab protocol and get
 - [Gianluca Truda](https://www.linkedin.com/in/gianluca-truda/)
 - [Cathal O'Reilly](https://www.linkedin.com/in/cathalbio/)
 - [Jacopo Gabrielli](https://www.linkedin.com/in/jacopo-gabrielli-453b58139/)
-- [Daniele Simoneschi](www.linkedin.com/in/danielesimoneschi)
+- [Daniele Simoneschi](https://www.linkedin.com/in/danielesimoneschi)
 - [Lisa Neidhardt](https://www.linkedin.com/in/lisa-neidhardt)
 - [Tom Tumiel](https://twitter.com/tomtumiel)
 
